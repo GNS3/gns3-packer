@@ -5,15 +5,17 @@ users:
   - name: gns3
     sudo: ALL=(ALL) NOPASSWD:ALL
     groups: users, admin
-    home: /home/gns3
+    homedir: /home/gns3
     shell: /bin/bash
     lock_passwd: false
 ssh_pwauth: true
 disable_root: false
 chpasswd:
-  list: |
-    gns3:gns3
   expire: false
+  users:
+    - name: gns3
+      password: gns3
+      type: text
 
 packages:
   - nano

@@ -9,7 +9,7 @@
    },
    "provisioners" : [
       {
-        "inline": "/usr/bin/cloud-init status --wait",
+        "inline": "/usr/bin/cloud-init status --wait --format json",
          "type": "shell"
       },
       {
