@@ -33,7 +33,7 @@ then
     git clone https://github.com/GNS3/gns3-server.git gns3-server
 fi
 
-sudo chown -R gns3:gns3 gns3server
+sudo chown -R gns3:gns3 gns3-server
 cd gns3-server
 sudo chmod -R 775 .git
 git reset --hard HEAD
