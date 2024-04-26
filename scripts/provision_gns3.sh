@@ -31,12 +31,6 @@ sudo apt-get update
 sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y
 sudo DEBIAN_FRONTEND=noninteractive apt install -y python3-dev gcc git ntp
 
-# Install pip3 if missing
-if [[ ! $(which pip3) ]]
-then
-  wget https://bootstrap.pypa.io/get-pip.py -O /tmp/get-pip.py && sudo -H python3 /tmp/get-pip.py
-fi
-
 # use the GNS3 server virtual environment
 source /home/gns3/.venv/gns3server-venv/bin/activate
 

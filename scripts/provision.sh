@@ -16,15 +16,9 @@ set -e
 cd /tmp/config
 sudo bash install.sh
 
-# Install pip3 if missing
-if [[ ! $(which pip3) ]]
-then
-  wget https://bootstrap.pypa.io/get-pip.py -O /tmp/get-pip.py && sudo -H python3 /tmp/get-pip.py
-fi
-
 # Install the GNS3 VM menu dependency
 sudo apt-get install -y dialog
-sudo -H pip3 install pythondialog
+sudo -H pip3 install passlib pythondialog --break-system-packages
 
 # Block IOU phone home call
 echo "127.0.0.254 xml.cisco.com" | sudo tee --append /etc/hosts

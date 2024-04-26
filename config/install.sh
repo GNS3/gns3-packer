@@ -30,39 +30,39 @@ export UBUNTU_RELEASE=`lsb_release -c -s`
 ## APT sources ##
 #################
 
-if [[ "$(dpkg --print-architecture)" == "arm64" ]]
-then
-
-cat > /etc/apt/sources.list << EOF
-# For arm64 architecture
-deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ $UBUNTU_RELEASE main restricted universe multiverse
-deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ $UBUNTU_RELEASE-updates main restricted universe multiverse
-deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ $UBUNTU_RELEASE-backports main restricted universe multiverse
-deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ $UBUNTU_RELEASE-security main restricted universe multiverse
-
-# For i386 architecture (IOU support)
-deb [arch=i386] http://archive.ubuntu.com/ubuntu/ $UBUNTU_RELEASE main restricted universe multiverse
-deb [arch=i386] http://archive.ubuntu.com/ubuntu/ $UBUNTU_RELEASE-updates main restricted universe multiverse
-deb [arch=i386] http://archive.ubuntu.com/ubuntu/ $UBUNTU_RELEASE-backports main restricted universe multiverse
-deb [arch=i386] http://security.ubuntu.com/ubuntu/ $UBUNTU_RELEASE-security main restricted universe multiverse
-EOF
-
-else
-
-cat > /etc/apt/sources.list << EOF
-# For i386 and amd64 architectures
-deb http://archive.ubuntu.com/ubuntu/ $UBUNTU_RELEASE main restricted universe multiverse
-deb http://archive.ubuntu.com/ubuntu/ $UBUNTU_RELEASE-updates main restricted universe multiverse
-deb http://archive.ubuntu.com/ubuntu/ $UBUNTU_RELEASE-backports main restricted universe multiverse
-deb http://security.ubuntu.com/ubuntu/ $UBUNTU_RELEASE-security main restricted universe multiverse
-EOF
-
-fi
+#if [[ "$(dpkg --print-architecture)" == "arm64" ]]
+#then
+#
+#cat > /etc/apt/sources.list << EOF
+## For arm64 architecture
+#deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ $UBUNTU_RELEASE main restricted universe multiverse
+#deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ $UBUNTU_RELEASE-updates main restricted universe multiverse
+#deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ $UBUNTU_RELEASE-backports main restricted universe multiverse
+#deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ $UBUNTU_RELEASE-security main restricted universe multiverse
+#
+## For i386 architecture (IOU support)
+#deb [arch=i386] http://archive.ubuntu.com/ubuntu/ $UBUNTU_RELEASE main restricted universe multiverse
+#deb [arch=i386] http://archive.ubuntu.com/ubuntu/ $UBUNTU_RELEASE-updates main restricted universe multiverse
+#deb [arch=i386] http://archive.ubuntu.com/ubuntu/ $UBUNTU_RELEASE-backports main restricted universe multiverse
+#deb [arch=i386] http://security.ubuntu.com/ubuntu/ $UBUNTU_RELEASE-security main restricted universe multiverse
+#EOF
+#
+#else
+#
+#cat > /etc/apt/sources.list << EOF
+## For i386 and amd64 architectures
+#deb http://archive.ubuntu.com/ubuntu/ $UBUNTU_RELEASE main restricted universe multiverse
+#deb http://archive.ubuntu.com/ubuntu/ $UBUNTU_RELEASE-updates main restricted universe multiverse
+#deb http://archive.ubuntu.com/ubuntu/ $UBUNTU_RELEASE-backports main restricted universe multiverse
+#deb http://security.ubuntu.com/ubuntu/ $UBUNTU_RELEASE-security main restricted universe multiverse
+#EOF
+#
+#fi
 
 # Select the best APT mirror
 if [[ $(which pip3) ]]
 then
-  sudo -H python3 -m pip install -U apt-smart
+  sudo -H python3 -m pip install -U apt-smart --break-system-packages
   apt-smart -a
 fi
 
@@ -100,7 +100,7 @@ apt install -y virt-what
 apt install -y mingetty
 
 # Python
-apt-get install -y python3-dev python3-venv python3-setuptools
+apt-get install -y python3-dev python3-venv python3-pip python3-setuptools
 
 # Create virtualenv for gns3server
 if [[ ! -d "/home/gns3/.venv/gns3server-venv" ]]
