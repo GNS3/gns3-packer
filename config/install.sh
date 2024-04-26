@@ -60,11 +60,11 @@ export UBUNTU_RELEASE=`lsb_release -c -s`
 #fi
 
 # Select the best APT mirror
-if [[ $(which pip3) ]]
-then
-  sudo -H python3 -m pip install -U apt-smart --break-system-packages
-  apt-smart -a
-fi
+#if [[ $(which pip3) ]]
+#then
+#  sudo -H python3 -m pip install -U apt-smart --break-system-packages
+#  apt-smart -a
+#fi
 
 # Activate i386 for IOU support
 dpkg --add-architecture i386
