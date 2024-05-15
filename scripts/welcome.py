@@ -25,10 +25,9 @@ import subprocess
 import configparser
 import urllib.request
 import json
-from passlib.context import CryptContext
-from dialog import Dialog, PythonDialogBug
+import bcrypt
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+from dialog import Dialog, PythonDialogBug
 
 try:
     locale.setlocale(locale.LC_ALL, '')
@@ -407,7 +406,9 @@ def reset_password():
 
     if d.yesno("Do you want to reset the admin password for the GNS3 controller?") == d.OK:
         # sqlite3 gns3_controller.db "UPDATE users SET hashed_password = null WHERE username = 'admin';"
-        hashed_password = pwd_context.hash("admin")
+        salt = bcrypt.gensalt()
+        default_password = "admin"
+        hashed_password = bcrypt.hashpw(password=default_password.encode('utf-8'), salt=salt).decode('utf-8')
         os.system('sqlite3 /opt/gns3/server/gns3_controller.db "UPDATE users SET hashed_password = {} WHERE username = admin;"'.format(hashed_password))
         d.infobox("Admin password has been reset to 'admin'")
 

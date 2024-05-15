@@ -24,7 +24,7 @@ fi
 
 # Install the GNS3 VM menu dependency
 sudo apt-get install -y dialog
-sudo -H pip3 install pythondialog
+sudo -H pip3 install pythondialog bcrypt==4.1.2
 
 # Block IOU phone home call
 echo "127.0.0.254 xml.cisco.com" | sudo tee --append /etc/hosts
