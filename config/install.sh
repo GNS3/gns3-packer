@@ -60,11 +60,8 @@ export UBUNTU_RELEASE=`lsb_release -c -s`
 #fi
 
 # Select the best APT mirror
-#if [[ $(which pip3) ]]
-#then
-#  sudo -H python3 -m pip install -U apt-smart --break-system-packages
-#  apt-smart -a
-#fi
+# Taken from https://github.com/vegardit/fast-apt-mirror.sh
+sudo -H ./fast-apt-mirror.sh find --speedtests 10 --apply
 
 # Activate i386 for IOU support
 dpkg --add-architecture i386
