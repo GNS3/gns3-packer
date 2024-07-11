@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Prevent these packages to be uninstalled by cleaner.sh
+apt-mark hold libvirt-daemon-system
+apt-mark hold tigervnc-standalone-server
+
 sudo apt-get purge -y --yes vim-common
 sudo apt-get purge -y --yes usbutils
 sudo apt-get purge -y --yes man-db
