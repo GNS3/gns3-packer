@@ -29,10 +29,6 @@ export DEBIAN_FRONTEND="noninteractive"
 dpkg-reconfigure libc6
 sudo -E apt-get -q --option Dpkg::Options::=-"-force-confold" --allow-change-held-packages --assume-yes install libssl1.1
 
-# Unhold previously held packages (see https://github.com/GNS3/gns3-server/issues/2398)
-sudo apt-mark unhold libvirt-daemon-system
-sudo apt-mark unhold tigervnc-standalone-server
-
 if [[ "$(dpkg --print-architecture)" == "arm64" ]]
 then
 

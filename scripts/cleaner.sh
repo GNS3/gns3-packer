@@ -1,8 +1,10 @@
 #!/bin/bash
 
 # Prevent these packages to be uninstalled by cleaner.sh
+set +e
 apt-mark hold libvirt-daemon-system
 apt-mark hold tigervnc-standalone-server
+set -e
 
 sudo apt-get purge -y --yes vim-common
 sudo apt-get purge -y --yes usbutils
@@ -96,5 +98,7 @@ sudo e4defrag / &>/dev/null
 sudo bash /usr/local/bin/zerofree
 
 # Unhold previously held packages
+set +e
 sudo apt-mark unhold libvirt-daemon-system
 sudo apt-mark unhold tigervnc-standalone-server
+set -e
