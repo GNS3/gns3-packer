@@ -95,5 +95,7 @@ sudo e4defrag / &>/dev/null
 sudo bash /usr/local/bin/zerofree
 
 # Unhold previously held packages
+set +e
 sudo apt-mark unhold libvirt-daemon-system
 sudo apt-mark unhold tigervnc-standalone-server
+set -e
