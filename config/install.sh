@@ -125,7 +125,10 @@ then
 fi
 
 # For the NAT node
-apt-get install -y libvirt-daemon-system
+apt-get install -y --allow-change-held-packages libvirt-daemon-system
+
+# Prevent libvirt-daemon-system to be uninstalled by cleaner.sh
+apt-mark hold libvirt-daemon-system
 
 # Install Qemu
 apt-get install -y qemu-system-x86 cpulimit
@@ -162,7 +165,10 @@ chown root:root /etc/docker/daemon.json
 chmod 644 /etc/docker/daemon.json
 
 # Install VNC support for Docker
-apt-get install -y tigervnc-standalone-server
+apt-get install -y --allow-change-held-packages tigervnc-standalone-server
+
+# Prevent tigervnc to be uninstalled by cleaner.sh
+apt-mark hold tigervnc-standalone-server
 
 # Install net-tools for ifconfig etc.
 apt-get install -y net-tools

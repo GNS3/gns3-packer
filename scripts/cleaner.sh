@@ -1,11 +1,5 @@
 #!/bin/bash
 
-set +e
-
-# Prevent these packages to be uninstalled by cleaner.sh
-apt-mark hold libvirt-daemon-system
-apt-mark hold tigervnc-standalone-server
-
 sudo apt-get purge -y --yes vim-common
 sudo apt-get purge -y --yes usbutils
 sudo apt-get purge -y --yes man-db
@@ -35,6 +29,7 @@ sudo apt-get purge -y --yes pppoeconf
 sudo apt-get purge -y --yes popularity-contest
 sudo apt-get purge -y --yes installation-report
 sudo apt-get purge -y --yes command-not-found
+sudo apt-get purge -y --yes command-not-found-data
 sudo apt-get purge -y --yes friendly-recovery
 sudo apt-get purge -y --yes fonts-ubuntu-font-family-console
 sudo apt-get purge -y --yes laptop-detect
@@ -95,7 +90,3 @@ sudo e4defrag / &>/dev/null
 
 # Setup zerofree for disk compaction
 sudo bash /usr/local/bin/zerofree
-
-# Unhold previously held packages
-sudo apt-mark unhold libvirt-daemon-system
-sudo apt-mark unhold tigervnc-standalone-server
