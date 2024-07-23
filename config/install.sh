@@ -61,10 +61,11 @@ fi
 # Activate i386 for IOU support
 dpkg --add-architecture i386
 
-# Never upgrade to Ubuntu 20.04LTS
+# Never upgrade
+mkdir -p /etc/update-manager
 cp release-upgrades /etc/update-manager/release-upgrades
 chmod 644 /etc/update-manager/release-upgrades
-chown root:root /etc/update-manager/release-upgrades
+chown -R root:root /etc/update-manager
 
 # Add the GNS3 PPA
 if [[ ! $(which add-apt-repository) ]]
