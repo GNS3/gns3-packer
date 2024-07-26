@@ -36,13 +36,29 @@ fi
 
 if [[ "$TAG" != "4.2.1" ]]
 then
-  sudo -E add-apt-repository -y ppa:canonical-server/server-backports
-else
+
   # Get backports from https://launchpad.net/~canonical-server/+archive/ubuntu/server-backports/
+  sudo -E add-apt-repository -y ppa:canonical-server/server-backports
+
+  sudo cat > /etc/apt/preferences.d/99-server-backports-repository << EOF
+# Allow upgrading only qemu from the Server Team Backports repository
+Package: qemu*
+Pin: release n=focal
+Pin-Priority: 500
+
+# Never prefer other packages from the Server Team Backports repository
+Package: *
+Pin: release n=focal
+Pin-Priority: 1
+EOF
+
+else
+
   sudo add-apt-repository -y --remove ppa:canonical-server/server-backports
+
 fi
 
-sudo apt-mark unhold libvirt-daemon-system
+sudo apt autoremove -y
 sudo apt-get purge -y "qemu*"
 sudo apt-get update
 sudo apt-get install -y qemu-system-x86
