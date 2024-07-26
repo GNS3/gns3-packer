@@ -40,7 +40,7 @@ then
   # Get backports from https://launchpad.net/~canonical-server/+archive/ubuntu/server-backports/
   sudo -E add-apt-repository -y ppa:canonical-server/server-backports
 
-  sudo cat > /etc/apt/preferences.d/99-server-backports-repository << EOF
+  sudo sh -c "cat > /etc/apt/preferences.d/99-server-backports-repository" << EOF
 # Allow upgrading only qemu from the Server Team Backports repository
 Package: qemu*
 Pin: release n=focal
