@@ -118,8 +118,12 @@ def set_release_channel():
     if d.yesno("This feature is for testers only. You may break your GNS3 installation. Are you REALLY sure you want to continue?", yes_label="Exit (Safe option)", no_label="Continue") == d.OK:
         return
     code, tag = d.menu("Select the GNS3 release channel",
-                       choices=[("3.0", "Current stable release (RECOMMENDED)"),
-                                ("3.0dev", "Totally unstable version")])
+                       choices=[
+                           ("2.2", "Current stable release (RECOMMENDED)"),
+                           ("2.2dev", "Current unstable version"),
+                           ("3.0", "Next stable release"),
+                           ("3.0dev", "Totally unstable version")
+                       ])
     d.clear()
     if code == Dialog.OK:
         os.makedirs(os.path.expanduser("~/.config/GNS3"), exist_ok=True)
@@ -418,10 +422,10 @@ def qemu():
     """
 
     code, version = d.menu("Select the Qemu version to install",
-                            choices=[("6.2.0", "Qemu version 6.2.0")])
+                            choices=[("8.2.2", "Qemu version 8.2.2")])
     d.clear()
     if code == Dialog.OK:
-        d.infobox("Qemu version 6.2.0 is already installed and there is currently no backported version available")
+        d.infobox("Qemu version 8.2.2 is already installed and there is currently no back-ported version available")
         # script_url = "https://raw.githubusercontent.com/GNS3/gns3-vm/focal-stable/scripts/qemu.sh"
         # ret = os.system("curl -Lk {url} > /tmp/qemu.sh && bash -x /tmp/qemu.sh {version}".format(url=script_url,
         #                                                                                          version=version))
