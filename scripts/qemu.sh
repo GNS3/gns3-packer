@@ -40,18 +40,6 @@ then
   # Get backports from https://launchpad.net/~canonical-server/+archive/ubuntu/server-backports/
   sudo -E add-apt-repository -y ppa:canonical-server/server-backports
 
-  sudo sh -c "cat > /etc/apt/preferences.d/99-server-backports-repository" << EOF
-# Set lower priority to all packages from Server Team Backports repository
-Package: *
-Pin: release o=LP-PPA-canonical-server
-Pin-Priority: 400
-
-# Install Qemu packages from the Server Team Backports repository
-Package: qemu*
-Pin: release o=LP-PPA-canonical-server
-Pin-Priority: 500
-EOF
-
 else
 
   sudo add-apt-repository -y --remove ppa:canonical-server/server-backports
