@@ -41,15 +41,15 @@ then
   sudo -E add-apt-repository -y ppa:canonical-server/server-backports
 
   sudo sh -c "cat > /etc/apt/preferences.d/99-server-backports-repository" << EOF
-# Allow upgrading only qemu from the Server Team Backports repository
-Package: qemu*
-Pin: release n=focal
-Pin-Priority: 500
-
-# Never prefer other packages from the Server Team Backports repository
+# Set lower priority to all packages from Server Team Backports repository
 Package: *
-Pin: release n=focal
-Pin-Priority: 1
+Pin: release o=LP-PPA-canonical-server
+Pin-Priority: 400
+
+# Install Qemu packages from the Server Team Backports repository
+Package: qemu*
+Pin: release o=LP-PPA-canonical-server
+Pin-Priority: 500
 EOF
 
 else
