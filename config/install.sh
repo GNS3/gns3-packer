@@ -112,6 +112,9 @@ apt-get install -y jq
 # Install virt-what
 apt-get install -y virt-what
 
+# Install cpu-checker (for kvm-ok)
+apt-get install -y cpu-checker
+
 # Autologin
 apt-get install -y mingetty
 

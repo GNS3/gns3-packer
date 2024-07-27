@@ -46,6 +46,7 @@ else
 
 fi
 
+sudo apt-mark unhold libvirt-daemon-system
 sudo apt autoremove -y
 sudo apt-get purge -y "qemu*"
 sudo apt-get update
