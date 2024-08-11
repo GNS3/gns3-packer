@@ -112,7 +112,7 @@ jobs:
 
     environment:
         DEVICE_TYPE: m3.small.x86
-        METRO: da # Dallas
+        METRO: sv # Silicon Valley
 
     steps:
       - checkout
