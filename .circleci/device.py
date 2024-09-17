@@ -23,6 +23,8 @@ import sys
 import time
 import packet
 
+from datetime import datetime, timedelta, timezone
+
 token = sys.argv[1]
 action = sys.argv[2]
 packet_project = sys.argv[3]
@@ -51,13 +53,18 @@ def get():
     device = get_device(gns3_project, GNS3_HOSTNAME)
 
     if device is None:
-        # create device
+
+        # termination time is 1h 30min from now (UTC time)
+        termination_time = datetime.now(timezone.utc) + timedelta(hours=1, minutes=30)
+        print("Creating device with termination time: {}".format(termination_time.isoformat()))
+
         device = manager.create_device(
             project_id=gns3_project.id,
             hostname=GNS3_HOSTNAME,
             plan=server_type,
             metro="dc",
-            operating_system="ubuntu_22_04")
+            operating_system="ubuntu_22_04",
+            termination_time=termination_time.isoformat())
 
     # wait max 20 min for being active
     check_every = 5  # seconds
