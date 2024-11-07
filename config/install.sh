@@ -112,13 +112,28 @@ apt-get install -y jq
 # Install virt-what
 apt-get install -y virt-what
 
+# Install cpu-checker (for kvm-ok)
+apt-get install -y cpu-checker
+
 # Autologin
 apt-get install -y mingetty
 
 # Python
 apt-get install -y python3-dev python3-venv python3-setuptools
 
-# Create virtualenv for gns3server
+# Set Python3.9 as default
+#apt-get install -y python3.9 python3.9-venv
+#sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1
+#sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 2
+#sudo update-alternatives --config python3
+#
+## Delete the old environment if it's not Python 3.9.5
+#if [[ -d "/home/gns3/.venv/gns3server-venv" && "$(/home/gns3/.venv/gns3server-venv/bin/python3 -V)" != "Python 3.9.5" ]]
+#then
+#  rm -rf /home/gns3/.venv/gns3server-venv
+#fi
+
+# Create virtualenv for gns3server using Python 3.9
 if [[ ! -d "/home/gns3/.venv/gns3server-venv" ]]
 then
   python3 -m venv /home/gns3/.venv/gns3server-venv

@@ -401,10 +401,9 @@ def qemu():
 
     code, version = d.menu("Select the Qemu version to install",
                             choices=[("4.2.1", "Qemu version 4.2.1"),
-                                     ("7.0", "Qemu version 7.0")])
+                                     ("8.0.4", "Qemu version 8.0.4")])
     d.clear()
     if code == Dialog.OK:
-        # d.infobox("Qemu version 4.2.1 is already installed and there is currently no backported version available")
         script_url = "https://raw.githubusercontent.com/GNS3/gns3-vm/focal-stable/scripts/qemu.sh"
         ret = os.system("curl -Lk {url} > /tmp/qemu.sh && bash -x /tmp/qemu.sh {version}".format(url=script_url,
                                                                                                  version=version))
