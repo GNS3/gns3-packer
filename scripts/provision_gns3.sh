@@ -41,7 +41,7 @@ fi
 source /home/gns3/.venv/gns3server-venv/bin/activate
 
 # upgrade pip and wheel to the latest version
-python3 -m pip install --upgrade pip wheel
+python3 -m pip install --upgrade pip wheel setuptools
 
 # Exit immediately if a command exits with a non-zero status.
 set -e
