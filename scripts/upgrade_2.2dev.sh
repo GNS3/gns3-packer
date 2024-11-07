@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (C) 2023 GNS3 Technologies Inc.
+# Copyright (C) 2015 GNS3 Technologies Inc.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,20 +19,32 @@
 # Exit immediately if a command exits with a non-zero status.
 set -e
 
-export BRANCH="noble-stable"
-export UNSTABLE_APT="0"
-export PYPI_GNS3SERVER_JSON_URL="https://pypi.org/pypi/gns3-server/json"
+export BRANCH="noble-unstable"
+export UNSTABLE_APT="1"
 
 # upgrade the GNS3 VM first
 curl -Lk "https://raw.githubusercontent.com/GNS3/gns3-vm/$BRANCH/scripts/upgrade_vm.sh" > /tmp/upgrade_vm.sh && bash -x /tmp/upgrade_vm.sh
 
 # install the GNS3 server
-if [[ -z "$1" ]]
+if [[ ! -d "gns3-server" ]]
 then
-  # get the latest stable release of channel 3.0
-  RELEASE=`curl -Lk "$PYPI_GNS3SERVER_JSON_URL" | jq  -r '.releases | keys | .[]' | grep -E '^3.0' | grep -v '[abrd]' | sort -V | tail -n 1`
+    sudo apt-get update
+    sudo apt-get install -y git
+    git clone https://github.com/GNS3/gns3-server.git gns3-server
+fi
+
+sudo chown -R gns3:gns3 gns3-server
+cd gns3-server
+sudo chmod -R 775 .git
+git reset --hard HEAD
+git fetch origin
+
+if [[ -z "$1" ]] || [[ "$1" == "2.2" ]]
+then
+  git checkout "2.2" # latest dev version on this branch
+  git pull
 else
-  RELEASE=$1
+  git checkout $1
 fi
 
 # use the GNS3 server virtual environment
@@ -41,12 +53,14 @@ source /home/gns3/.venv/gns3server-venv/bin/activate
 if  [[ -z "$HTTP_PROXY" ]]
 then
   python3 -m pip install --upgrade pip setuptools
-  python3 -m pip install gns3-server==$RELEASE
+  python3 -m pip install -U -r requirements.txt
 else
   python3 -m pip install --proxy $HTTP_PROXY --upgrade pip setuptools
-  python3 -m pip install --proxy $HTTP_PROXY gns3-server==$RELEASE
+  python3 -m pip install --proxy $HTTP_PROXY -U -r requirements.txt
 fi
 
-echo "Upgrade to $RELEASE completed, rebooting in 10 seconds..."
+python3 -m pip install .
+
+echo "Update to 2.2dev completed, rebooting in 10 seconds..."
 sleep 10
 sudo reboot

@@ -70,7 +70,7 @@
          "headless": true,
          "accelerator": "kvm",
          "net_device": "virtio-net-pci",
-         "iso_url" : "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img",
+         "iso_url" : "noble-server-cloudimg-amd64.img",
          "iso_checksum" : "file:http://cloud-images.ubuntu.com/noble/current/SHA256SUMS",
          "cpus": "{{user `cpus`}}",
          "memory": "{{user `memory`}}",
