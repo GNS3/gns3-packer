@@ -34,8 +34,8 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y python3-dev gcc git ntp
 # use the GNS3 server virtual environment
 source /home/gns3/.venv/gns3server-venv/bin/activate
 
-# upgrade pip and wheel to the latest version
-python3 -m pip install --upgrade pip wheel
+# upgrade pip, wheel and setuptools to the latest version
+python3 -m pip install --upgrade pip wheel setuptools
 
 # Exit immediately if a command exits with a non-zero status.
 set -e
