@@ -8,14 +8,9 @@ users:
     homedir: /home/gns3
     shell: /bin/bash
     lock_passwd: false
+    plain_text_passwd: gns3
 ssh_pwauth: true
 disable_root: false
-chpasswd:
-  expire: false
-  users:
-    - name: gns3
-      password: gns3
-      type: text
 
 packages:
   - nano
