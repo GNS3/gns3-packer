@@ -57,7 +57,7 @@ def get():
 
         # termination time is 1h 30min from now (UTC time)
         termination_time = datetime.now(timezone.utc) + timedelta(hours=1, minutes=30)
-        print("Creating device with termination time: {}".format(termination_time.isoformat()))
+        #print("Creating device with termination time: {}".format(termination_time.isoformat()))
 
         device = manager.create_device(
             project_id=gns3_project.id,
