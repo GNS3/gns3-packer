@@ -282,7 +282,8 @@ jobs:
               then
                 apt install -y qemu-utils qemu-system-arm qemu-efi-aarch64
                 ./qemu_arm64.sh
-                ./release_qemu_arm64.sh ${GNS3_VERSION} GNS3VM.ARM64.$(cat version).zip"
+                ./release_qemu_arm64.sh ${GNS3_VERSION} GNS3VM.ARM64.$(cat version).zip
+              fi
             "
 
       - finalize
