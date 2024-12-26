@@ -7,7 +7,11 @@ export GNS3VM_VERSION=`cat version`
 echo "Build Base VM $GNS3VM_VERSION for AMD64"
 
 rm -Rf output-qemu-amd64
-curl -O https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img  # download the cloud image outside packer
+if [[ ! -f "./noble-server-cloudimg-amd64.img" ]]
+then
+  # download the cloud image outside packer
+   curl -O https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img
+fi
 packer plugins install github.com/hashicorp/qemu
 packer build -only=qemu-amd64 $* base_vm.json
 
