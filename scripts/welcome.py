@@ -382,7 +382,6 @@ def set_security():
     Configures SSL encryption on the GNS3 server.
     """
 
-    config = get_server_config()
     if d.yesno("Do you want to configure SSL encryption?") == d.OK:
         certfile = "/opt/gns3/server/ssl/server.cert"
         certkey = "/opt/gns3/server/ssl/server.key"
@@ -392,6 +391,7 @@ def set_security():
         if ret != 0:
             d.msgbox("Could not set up SSL encryption")
         else:
+            config = get_server_config()
             if not config.has_section("Server"):
                 config.add_section("Server")
             config.set("Server", "protocol", "https")
@@ -399,9 +399,10 @@ def set_security():
             config.set("Server", "port", 443)
             config.set("Server", "certfile", certfile)
             config.set("Server", "certkey", certkey)
-            os.system("sudo service gns3 stop")
+            write_config(config)
+            os.system("sudo service gns3 restart")
             d.infobox("SSL configured with self-signed certificate created in '/opt/gns3/server/ssl'")
-    write_config(config)
+
 
 def reset_password():
     """
