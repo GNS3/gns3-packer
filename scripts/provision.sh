@@ -29,13 +29,6 @@ fi
 sudo apt-get install -y dialog
 sudo -H pip3 install pythondialog
 
-# Block IOU phone home call (xml.cisco.com is not used at the moment)
-# Crashes can occur if blocked on Ubuntu Focal: https://github.com/GNS3/gns3-registry/issues/868
-if [[ $UBUNTU_RELEASE != "focal" ]]
-then
-  echo "127.0.0.254 xml.cisco.com" | sudo tee --append /etc/hosts
-fi
-
 # Force the hostid for IOU license check
 sudo dd if=/dev/zero bs=4 count=1 of=/etc/hostid
 
