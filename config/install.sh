@@ -147,7 +147,7 @@ apt-get install -y --allow-change-held-packages libvirt-daemon-system
 apt-mark hold libvirt-daemon-system
 
 # Install Qemu
-apt-get install -y qemu-system-x86 cpulimit
+apt-get install -y qemu-system-x86 cpulimit swtpm
 sudo usermod -aG kvm gns3
 
 if [[ "$(dpkg --print-architecture)" == "arm64" ]]
