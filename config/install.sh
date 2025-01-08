@@ -119,7 +119,7 @@ apt install -y sqlite3
 ##################
 
 # Install Qemu
-apt install -y qemu-system-x86 qemu-kvm cpulimit
+apt install -y qemu-system-x86 qemu-kvm cpulimit swtpm
 sudo usermod -aG kvm gns3
 
 # Fix the KVM high CPU usage with some appliances
