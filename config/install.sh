@@ -99,7 +99,7 @@ fi
 
 # Add the PPA to install a recent version of swtpm
 sudo -E add-apt-repository -y ppa:stefanberger/swtpm-focal
-sudo apt purge -y swtpm
+sudo apt purge -y swtpm # uninstall the old version to prevent conflicts
 
 # Set up the Docker repository
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -153,6 +153,11 @@ apt-mark hold libvirt-daemon-system
 # Install Qemu
 apt-get install -y qemu-system-x86 cpulimit libtpms0 swtpm
 sudo usermod -aG kvm gns3
+
+# GNS3 projects directory in the VM is located on a different partition than the partition for the root directory (/)
+# additional permissions need to be configured for swtpm in AppArmor
+echo "owner /opt/gns3/** rwk," | sudo tee /etc/apparmor.d/local/usr.bin.swtpm > /dev/null
+sudo service apparmor restart
 
 if [[ "$(dpkg --print-architecture)" == "arm64" ]]
 then
