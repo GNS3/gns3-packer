@@ -76,6 +76,10 @@ else
     add-apt-repository -y --remove ppa:gns3/unstable
 fi
 
+# Add the PPA to install a recent version of swtpm
+sudo -E add-apt-repository -y ppa:stefanberger/swtpm-noble
+sudo apt purge -y swtpm
+
 # Set up the Docker repository
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor --yes -o /usr/share/keyrings/docker-archive-keyring.gpg
 echo \
@@ -119,7 +123,7 @@ apt install -y sqlite3
 ##################
 
 # Install Qemu
-apt install -y qemu-system-x86 qemu-kvm cpulimit swtpm
+apt install -y qemu-system-x86 qemu-kvm cpulimit libtpms0 swtpm
 sudo usermod -aG kvm gns3
 
 # Fix the KVM high CPU usage with some appliances
