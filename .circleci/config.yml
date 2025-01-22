@@ -235,6 +235,8 @@ jobs:
 
               cd gns3-vm
 
+              cp \"GNS3.VM.VirtualBox.${GNS3_NUMBER}.zip\" /tmp/GNS3VM.VirtualBox.${GNS3_NUMBER}.zip
+
               if [ ! -e \"GNS3.VM.KVM.${GNS3_NUMBER}.zip\" ];
               then
                 ./release_kvm.sh ${GNS3_VERSION}
@@ -297,9 +299,9 @@ workflows:
               only: /v3.*/
             branches:
               ignore: /.*/
-      - arm64-build:
-          filters:
-            tags:
-              only: /v3.*/
-            branches:
-              ignore: /.*/
+#      - arm64-build:
+#          filters:
+#            tags:
+#              only: /v3.*/
+#            branches:
+#              ignore: /.*/
