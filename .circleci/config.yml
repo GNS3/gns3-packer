@@ -93,8 +93,10 @@ commands:
             cd ..
 
             echo "Deploying version ${CIRCLE_TAG} on GitHub"
+            ls -l artifacts
             for file in artifacts/GNS3.VM.*.{zip,sha256}
             do
+              echo "Uploading $file to GitHub"
               python3 gns3-build/upload.py ${CIRCLE_TAG} $file
             done
 
