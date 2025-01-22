@@ -297,9 +297,9 @@ workflows:
               only: /v3.*/
             branches:
               ignore: /.*/
-#      - arm64-build:
-#          filters:
-#            tags:
-#              only: /v3.*/
-#            branches:
-#              ignore: /.*/
+      - arm64-build:
+          filters:
+            tags:
+              only: /v3.*/
+            branches:
+              ignore: /.*/
