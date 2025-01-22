@@ -211,20 +211,6 @@ jobs:
               fi
             "
 
-#      - run:
-#          name: Release KVM VM
-#          command: |
-#            ssh root@${DEVICE_IP} "
-#              set -e
-#
-#              cd gns3-vm
-#
-#              if [ ! -e \"GNS3.VM.KVM.${GNS3_NUMBER}.zip\" ];
-#              then
-#                ./release_kvm.sh ${GNS3_VERSION}
-#              fi
-#            "
-
       - run:
           name: Release VMWare ESXI VM
           command: |
@@ -238,6 +224,20 @@ jobs:
               if [ ! -e \"GNS3.VM.VMware.ESXI.${GNS3_NUMBER}.zip\" ];
               then
                 ./release_vmware_esxi.sh ${GNS3_VERSION}
+              fi
+            "
+
+      - run:
+          name: Release KVM VM
+          command: |
+            ssh root@${DEVICE_IP} "
+              set -e
+
+              cd gns3-vm
+
+              if [ ! -e \"GNS3.VM.KVM.${GNS3_NUMBER}.zip\" ];
+              then
+                ./release_kvm.sh ${GNS3_VERSION}
               fi
             "
 

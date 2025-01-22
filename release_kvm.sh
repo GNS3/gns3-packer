@@ -15,21 +15,13 @@ then
     exit 1
 fi
 
-#export GNS3_RELEASE_CHANNEL=`echo -n $GNS3_VERSION | sed "s/\.[^.]*$//"`
-#FIXME: force to 3.0
-export GNS3_RELEASE_CHANNEL="3.0"
-
-echo "Build VM for GNS3 $GNS3_VERSION"
+echo "Creating KVM VM for GNS3 $GNS3_VERSION"
 echo "Release channel: $GNS3_RELEASE_CHANNEL"
 
-
-if [[ ! -f "./GNS3.VM.VirtualBox.${GNS3_VERSION}.zip" ]]
+if [[ ! -f "/tmp/GNS3VM.VirtualBox.${GNS3_VERSION}.zip" ]]
 then
-    export GNS3VM_URL="https://github.com/GNS3/gns3-gui/releases/download/v${GNS3_VERSION}/GNS3.VM.VirtualBox.${GNS3_VERSION}.zip"
-    echo "Download the base GNS3 VM version ${GNS3VM_VERSION} from GitHub"
-    curl --insecure -L "$GNS3VM_URL" > "/tmp/GNS3VM.VirtualBox.${GNS3_VERSION}.zip"
-else
-    cp "./GNS3.VM.VirtualBox.${GNS3_VERSION}.zip" "/tmp/GNS3VM.VirtualBox.${GNS3_VERSION}.zip"
+    echo "/tmp/GNS3VM.VirtualBox.${GNS3_VERSION}.zip does not exist"
+    exit 1
 fi
 
 unzip -p "/tmp/GNS3VM.VirtualBox.${GNS3_VERSION}.zip" "GNS3 VM.ova" > "/tmp/GNS3VM.VirtualBox.${GNS3_VERSION}.ova"
