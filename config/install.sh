@@ -101,6 +101,11 @@ fi
 sudo -E add-apt-repository -y ppa:stefanberger/swtpm-focal
 sudo apt purge -y swtpm # uninstall the old version to prevent conflicts
 
+# Add the PPA to install a recent version of Qemu
+sudo -E add-apt-repository -y ppa:canonical-server/server-backports
+sudo apt autoremove -y
+sudo apt-get purge -y "qemu*"
+
 # Set up the Docker repository
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo -E add-apt-repository -y \
@@ -141,12 +146,12 @@ fi
 # For the NAT node
 apt-get install -y --allow-change-held-packages libvirt-daemon-system
 
-# Prevent libvirt-daemon-system to be uninstalled by cleaner.sh
-apt-mark hold libvirt-daemon-system
-
-# Install Qemu
+# Install Qemu & dependencies
 apt-get install -y qemu-system-x86 cpulimit libtpms0 swtpm
 sudo usermod -aG kvm gns3
+
+# Prevent libvirt-daemon-system to be uninstalled by cleaner.sh
+apt-mark hold libvirt-daemon-system
 
 # GNS3 projects directory in the VM is located on a different partition than the partition for the root directory (/)
 # additional permissions need to be configured for swtpm in AppArmor
