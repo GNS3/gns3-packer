@@ -10,7 +10,7 @@ then
 fi
 
 mkdir -p ubuntu-arm64-iso
-mount -r ubuntu-20.04.5-live-server-arm64.iso ubuntu-arm64-iso
+sudo mount -r ubuntu-20.04.5-live-server-arm64.iso ubuntu-arm64-iso
 
 qemu-img create -f qcow2 gns3vm-disk1.qcow2 20G
 qemu-img create -f qcow2 gns3vm-disk2.qcow2 500G

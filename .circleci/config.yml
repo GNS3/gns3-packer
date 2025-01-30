@@ -296,9 +296,9 @@ workflows:
               only: /v2.*/
             branches:
               ignore: /.*/
-#      - arm64-build:
-#          filters:
-#            tags:
-#              only: /v2.*/
-#            branches:
-#              ignore: /.*/
+      - arm64-build:
+          filters:
+            tags:
+              only: /v2.*/
+            branches:
+              ignore: /.*/
