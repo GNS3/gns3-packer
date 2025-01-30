@@ -22,11 +22,13 @@ commands:
             echo "export GNS3_NUMBER=\`echo \$GNS3_VERSION | sed \"s/^v//\"\`" >> $BASH_ENV
 
       - run:
-          name: Install Python dependencies
+          name: Install dependencies
           command: |
             python3 -m venv env
             source env/bin/activate
             python3 -m pip install packet-python
+            apt update
+            apt install -y 7zip
 
       - run:
           name: Get builder device
@@ -60,12 +62,12 @@ commands:
             mkdir artifacts
             scp root@${DEVICE_IP}:"gns3-vm/GNS3*.zip" artifacts
 
-      - run:
-          name: Destroy device
-          when: always
-          command: |
-            source env/bin/activate
-            python3 .circleci/device.py ${EQUINIX_TOKEN} destroy "${EQUINIX_PROJECT}" ${DEVICE_TYPE} ${METRO}
+#      - run:
+#          name: Destroy device
+#          when: always
+#          command: |
+#            source env/bin/activate
+#            python3 .circleci/device.py ${EQUINIX_TOKEN} destroy "${EQUINIX_PROJECT}" ${DEVICE_TYPE} ${METRO}
 
       - run:
           name: Generate SHA256 checksums
@@ -125,8 +127,7 @@ jobs:
           command: |
             ssh root@${DEVICE_IP} "
               set -e
-              apt update
-              apt -y install linux-headers-\$(uname -r) git 7zip
+              apt -y install linux-headers-\$(uname -r) git
               wget -q -O- http://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc | apt-key add -
               wget -q -O- http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc | apt-key add -
               apt-add-repository \"deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian \$(lsb_release -cs) contrib\"
@@ -267,7 +268,6 @@ jobs:
 
               if [ ! -f "/tmp/packer.zip" ]
               then
-                apt update && apt install -y 7zip
                 wget https://releases.hashicorp.com/packer/1.0.4/packer_1.0.4_linux_arm64.zip -O /tmp/packer.zip
               fi
 
