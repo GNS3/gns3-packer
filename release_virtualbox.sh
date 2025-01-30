@@ -40,13 +40,14 @@ else
     export GNS3VM_VERSION=`cat version`
     cp "$GNS3_VM_FILE" "/tmp/GNS3VM.VirtualBox.${GNS3VM_VERSION}.zip"
 fi
-unzip -p "/tmp/GNS3VM.VirtualBox.${GNS3VM_VERSION}.zip" "GNS3 VM.ova" > ${GNS3_SRC}
+
+7z e -y "/tmp/GNS3VM.VirtualBox.${GNS3VM_VERSION}.zip" "GNS3 VM.ova"
+mv "GNS3 VM.ova" ${GNS3_SRC}
 
 packer build -only=virtualbox-ovf gns3_release.json
 
 cd output-virtualbox-ovf
-
-zip -9 "../GNS3.VM.VirtualBox.${GNS3_VERSION}.zip" "GNS3 VM.ova"
+7z a -bsp1 -mx=1 "../GNS3.VM.VirtualBox.${GNS3_VERSION}.zip" "GNS3 VM.ova"
 
 cd ..
 rm -Rf output-*

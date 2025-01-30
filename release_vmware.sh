@@ -39,8 +39,9 @@ else
     export GNS3VM_VERSION=`cat version`
     cp "$GNS3_VM_FILE" "/tmp/GNS3VM.VMware.${GNS3VM_VERSION}.zip"
 fi
-unzip -p "/tmp/GNS3VM.VMware.${GNS3VM_VERSION}.zip" "GNS3 VM.ova" > "/tmp/GNS3VM.VMWare.${GNS3VM_VERSION}.ova"
 
+7z e -y "/tmp/GNS3VM.VMware.${GNS3VM_VERSION}.zip" "GNS3 VM.ova"
+mv "GNS3 VM.ova" "/tmp/GNS3VM.VMWare.${GNS3VM_VERSION}.ova"
 
 echo "Convert to VMX file format"
 rm -Rf output-vmx
@@ -61,7 +62,7 @@ ovftool --noImageFiles --noNvramFile "GNS3 VM.vmx" "GNS3 VM.ova"
 #echo "Fix OVA network"
 #mv "GNS3 VM.ova" "GNS3 VM.tmp.ova"
 #python3 ../fix_vmware_ova_network.py "GNS3 VM.tmp.ova" "GNS3 VM.ova"
-zip -9 "../GNS3.VM.VMware.Workstation.${GNS3_VERSION}.zip" "GNS3 VM.ova"
+7z a -bsp1 -mx=1 "../GNS3.VM.VMware.Workstation.${GNS3_VERSION}.zip" "GNS3 VM.ova"
 
 cd ..
 rm -Rf output-*

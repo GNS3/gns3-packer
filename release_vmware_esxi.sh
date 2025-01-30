@@ -29,14 +29,15 @@ then
     curl -Lk --http1.1 "$GNS3VM_URL" > "/tmp/GNS3VM.VMware.${GNS3_VERSION}.zip"
 fi
 
-unzip -p "/tmp/GNS3VM.VMware.${GNS3_VERSION}.zip" "GNS3 VM.ova" > "/tmp/GNS3VM.VMWare.${GNS3_VERSION}.ova"
+7z e -y "/tmp/GNS3VM.VMware.${GNS3_VERSION}.zip" "GNS3 VM.ova"
+mv "GNS3 VM.ova" "/tmp/GNS3VM.VMWare.${GNS3_VERSION}.ova"
 
 echo "Upgrading OVA for VMware ESXi"
 rm -Rf output-esxi
 mkdir output-esxi
 cd output-esxi
 python3 ../workstation_to_esxi.py "/tmp/GNS3VM.VMWare.${GNS3_VERSION}.ova" "GNS3 VM.ova"
-zip -9 "../GNS3.VM.VMware.ESXI.${GNS3_VERSION}.zip" "GNS3 VM.ova"
+7z a -bsp1 -mx=1 "../GNS3.VM.VMware.ESXI.${GNS3_VERSION}.zip" "GNS3 VM.ova"
 
 cd ..
 rm -Rf output-*
