@@ -22,9 +22,6 @@ then
     exit 1
 fi
 
-7z e -y "/tmp/GNS3VM.VirtualBox.${GNS3VM_VERSION}.zip" "GNS3 VM.ova"
-mv "GNS3 VM.ova" ${GNS3_SRC}
-
 echo "Building VirtualBox VM for GNS3 $GNS3_VERSION"
 
 # Build the VM based on the VMware OVA
