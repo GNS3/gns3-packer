@@ -21,4 +21,4 @@ rm gns3vm-disk
 qemu-img convert -O qcow2 gns3vm-disk-1 gns3vm-disk2.qcow2
 rm gns3vm-disk-1
 
-zip -9 "../GNS3VM.Base.${GNS3VM_VERSION}.zip" gns3vm-disk1.qcow2 gns3vm-disk2.qcow2
+7z a -bsp1 -mx=9 "../GNS3VM.Base.${GNS3VM_VERSION}.zip" gns3vm-disk1.qcow2 gns3vm-disk2.qcow2
