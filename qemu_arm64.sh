@@ -10,7 +10,7 @@ then
 fi
 
 mkdir -p ubuntu-arm64-iso
-mount -r ubuntu-24.04.1-live-server-arm64.iso ubuntu-arm64-iso
+sudo mount -r ubuntu-24.04.1-live-server-arm64.iso ubuntu-arm64-iso
 
 qemu-img create -f qcow2 gns3vm-disk1.qcow2 20G
 qemu-img create -f qcow2 gns3vm-disk2.qcow2 500G
@@ -36,4 +36,4 @@ rm -Rf output-qemu-arm64
 cp gns3vm-disk1.qcow2 gns3vm-disk1.qcow2.bak
 qemu-img convert -O qcow2 gns3vm-disk1.qcow2.bak gns3vm-disk1.qcow2
 
-zip -9 "GNS3VM.ARM64.${GNS3VM_VERSION}.zip" gns3vm-disk1.qcow2 gns3vm-disk2.qcow2
+7z a -bsp1 -mx=9 "GNS3VM.ARM64.${GNS3VM_VERSION}.zip" gns3vm-disk1.qcow2 gns3vm-disk2.qcow2

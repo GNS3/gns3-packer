@@ -22,6 +22,9 @@ then
     exit 1
 fi
 
+7z e -y "/tmp/GNS3VM.VirtualBox.${GNS3VM_VERSION}.zip" "GNS3 VM.ova"
+mv "GNS3 VM.ova" ${GNS3_SRC}
+
 echo "Building VirtualBox VM for GNS3 $GNS3_VERSION"
 
 # Build the VM based on the VMware OVA
@@ -31,8 +34,7 @@ packer plugins install github.com/hashicorp/virtualbox
 packer build -only=virtualbox-ovf gns3_release_virtualbox.json
 
 cd output-virtualbox-ovf
-
-zip -9 "../GNS3.VM.VirtualBox.${GNS3_VERSION}.zip" "GNS3 VM.ova"
+7z a -bsp1 -mx=1 "../GNS3.VM.VirtualBox.${GNS3_VERSION}.zip" "GNS3 VM.ova"
 
 cd ..
 rm -Rf output-virtualbox-ovf

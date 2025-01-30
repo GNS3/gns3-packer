@@ -126,7 +126,7 @@ jobs:
             ssh root@${DEVICE_IP} "
               set -e
               apt update
-              apt -y install linux-headers-\$(uname -r) zip unzip git
+              apt -y install linux-headers-\$(uname -r) git 7zip
               wget -q -O- http://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc | apt-key add -
               wget -q -O- http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc | apt-key add -
               apt-add-repository \"deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian \$(lsb_release -cs) contrib\"
@@ -166,7 +166,8 @@ jobs:
                 wget https://releases.hashicorp.com/packer/1.11.2/packer_1.11.2_linux_amd64.zip -O /tmp/packer.zip
               fi
 
-              unzip -o /tmp/packer.zip -d /usr/local/bin/
+              7z e -y /tmp/packer.zip -o/usr/local/bin/
+              chmod +x /usr/local/bin/packer
               apt install -y genisoimage qemu-utils qemu-system-x86 qemu-kvm
             "
 
@@ -266,11 +267,12 @@ jobs:
 
               if [ ! -f "/tmp/packer.zip" ]
               then
-                apt update && apt install -y zip
+                apt update && apt install -y 7zip
                 wget https://releases.hashicorp.com/packer/1.0.4/packer_1.0.4_linux_arm64.zip -O /tmp/packer.zip
               fi
 
-              unzip -o /tmp/packer.zip -d /usr/local/bin/
+              7z e -y /tmp/packer.zip -o/usr/local/bin/
+              chmod +x /usr/local/bin/packer
             "
 
       - run:
