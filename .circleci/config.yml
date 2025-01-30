@@ -22,13 +22,11 @@ commands:
             echo "export GNS3_NUMBER=\`echo \$GNS3_VERSION | sed \"s/^v//\"\`" >> $BASH_ENV
 
       - run:
-          name: Install dependencies
+          name: Install Python dependencies
           command: |
             python3 -m venv env
             source env/bin/activate
             python3 -m pip install packet-python
-            apt update
-            apt install -y 7zip
 
       - run:
           name: Get builder device
@@ -41,10 +39,13 @@ commands:
             ssh-keyscan -H ${DEVICE_IP} >> ~/.ssh/known_hosts
 
       - run:
-          name: Clone repository on device
+          name: Install dependencies and clone repository on device
           command: |
             ssh root@${DEVICE_IP} "
               set -e
+
+              apt update
+              apt install -y 7zip
               if [ ! -d "~/gns3-vm" ]
               then
                 git clone https://github.com/GNS3/gns3-vm.git
@@ -127,12 +128,11 @@ jobs:
           command: |
             ssh root@${DEVICE_IP} "
               set -e
-              apt -y install linux-headers-\$(uname -r) git
+              apt -y install linux-headers-\$(uname -r)
               wget -q -O- http://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc | apt-key add -
               wget -q -O- http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc | apt-key add -
               apt-add-repository \"deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian \$(lsb_release -cs) contrib\"
-              apt update
-              apt -y install virtualbox-6.1
+              apt update && apt -y install virtualbox-6.1
             "
 
       - run:
