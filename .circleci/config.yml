@@ -43,7 +43,6 @@ commands:
           command: |
             ssh root@${DEVICE_IP} "
               set -e
-
               apt update
               apt install -y 7zip
               if [ ! -d "~/gns3-vm" ]
@@ -168,7 +167,6 @@ jobs:
               fi
 
               7z e -y /tmp/packer.zip -o/usr/local/bin/
-              chmod +x /usr/local/bin/packer
               apt install -y genisoimage qemu-utils qemu-system-x86 qemu-kvm
             "
 
@@ -271,8 +269,7 @@ jobs:
                 wget https://releases.hashicorp.com/packer/1.0.4/packer_1.0.4_linux_arm64.zip -O /tmp/packer.zip
               fi
 
-              7z e -y /tmp/packer.zip -o/usr/local/bin/
-              chmod +x /usr/local/bin/packer
+              7zz e -y /tmp/packer.zip -o/usr/local/bin/
             "
 
       - run:

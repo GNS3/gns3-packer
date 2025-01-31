@@ -9,8 +9,14 @@ then
   wget https://cdimage.ubuntu.com/releases/24.04/release/ubuntu-24.04.1-live-server-arm64.iso
 fi
 
+# patch the ISO image with recent version of subiquity
+snap download subiquity
+wget https://raw.githubusercontent.com/canonical/subiquity/refs/heads/main/scripts/inject-subiquity-snap.sh
+chmod +x inject-subiquity-snap.sh
+sudo ./inject-subiquity-snap.sh ubuntu-24.04.1-live-server-arm64.iso subiquity_*.snap ubuntu.iso
+
 mkdir -p ubuntu-arm64-iso
-sudo mount -r ubuntu-24.04.1-live-server-arm64.iso ubuntu-arm64-iso
+sudo mount -r ubuntu.iso ubuntu-arm64-iso
 
 qemu-img create -f qcow2 gns3vm-disk1.qcow2 20G
 qemu-img create -f qcow2 gns3vm-disk2.qcow2 500G
@@ -27,7 +33,7 @@ qemu-system-aarch64 -name "GNS3 VM" -nographic -m 4096 -cpu max -smp 8 \
 -bios /usr/share/qemu-efi-aarch64/QEMU_EFI.fd \
 -kernel ubuntu-arm64-iso/casper/vmlinuz -initrd ubuntu-arm64-iso/casper/initrd \
 -append "autoinstall ds=nocloud-net;s=http://10.0.2.2:4242/ console=ttyAMA0" \
--cdrom ubuntu-24.04.1-live-server-arm64.iso -no-reboot -boot strict=off
+-cdrom ubuntu.iso -no-reboot -boot strict=off
 
 packer build -only=qemu-arm64 $* gns3.json
 
@@ -36,4 +42,4 @@ rm -Rf output-qemu-arm64
 cp gns3vm-disk1.qcow2 gns3vm-disk1.qcow2.bak
 qemu-img convert -O qcow2 gns3vm-disk1.qcow2.bak gns3vm-disk1.qcow2
 
-7z a -bsp1 -mx=9 "GNS3VM.ARM64.${GNS3VM_VERSION}.zip" gns3vm-disk1.qcow2 gns3vm-disk2.qcow2
+7zz a -bsp1 -mx=9 "GNS3VM.ARM64.${GNS3VM_VERSION}.zip" gns3vm-disk1.qcow2 gns3vm-disk2.qcow2
