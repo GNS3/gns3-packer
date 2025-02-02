@@ -61,7 +61,10 @@ export UBUNTU_RELEASE=`lsb_release -c -s`
 
 # Select the best APT mirror
 # Taken from https://github.com/vegardit/fast-apt-mirror.sh
-sudo -H ./fast-apt-mirror.sh find --speedtests 10 --apply
+if [[ "$(dpkg --print-architecture)" != "arm64" ]]
+then
+  sudo -H ./fast-apt-mirror.sh find --speedtests 10 --apply
+fi
 
 # Activate i386 for IOU support
 dpkg --add-architecture i386
