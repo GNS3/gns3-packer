@@ -46,7 +46,7 @@ done
 
 cp ../create-vm.ps1 create-vm.ps1
 cp ../install-vm.bat install-vm.bat
-7z a -bsp1 -mx=9 "../GNS3.VM.Hyper-V.${GNS3_VERSION}.zip" *.vhd create-vm.ps1 install-vm.bat
+7z a -bsp1 -mx=1 "../GNS3.VM.Hyper-V.${GNS3_VERSION}.zip" *.vhd create-vm.ps1 install-vm.bat
 
 cd ..
 rm -Rf output-virtualbox-ovf

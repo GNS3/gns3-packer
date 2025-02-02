@@ -63,11 +63,11 @@ export UBUNTU_RELEASE=`lsb_release -c -s`
 # Taken from https://github.com/vegardit/fast-apt-mirror.sh
 if [[ "$(dpkg --print-architecture)" != "arm64" ]]
 then
-  sudo -H ./fast-apt-mirror.sh find --speedtests 10 --apply
-fi
+  sudo -H ./fast-apt-mirror.sh find --speedtests 10 --
 
-# Activate i386 for IOU support
-dpkg --add-architecture i386
+  # Activate i386 for IOU support
+  dpkg --add-architecture i386
+fi
 
 # use sudo -E to preserve proxy config
 if [[ "$UNSTABLE_APT" == "1" ]]
@@ -182,9 +182,9 @@ if [[ "$(dpkg --print-architecture)" == "arm64" ]]
 then
   # Install Qemu user emulation with binfmt_misc on arm64 (for IOU support)
   apt install -y binfmt-support qemu-user qemu-user-binfmt
+else
+  apt install -y gns3-iou
 fi
-
-apt install -y gns3-iou
 
 # System tuning for IOU support
 cp 50-qlen_gns3.conf /etc/sysctl.d/50-qlen_gns3.conf

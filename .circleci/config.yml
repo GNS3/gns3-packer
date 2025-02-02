@@ -266,10 +266,11 @@ jobs:
 
               if [ ! -f "/tmp/packer.zip" ]
               then
-                wget https://releases.hashicorp.com/packer/1.0.4/packer_1.0.4_linux_arm64.zip -O /tmp/packer.zip
+                wget https://releases.hashicorp.com/packer/1.11.2/packer_1.11.2_linux_arm64.zip -O /tmp/packer.zip
               fi
 
               7zz e -y /tmp/packer.zip -o/usr/local/bin/
+              apt install -y xorriso # needed by packer
             "
 
       - run:
