@@ -87,33 +87,6 @@
          "ssh_username" : "{{user `ssh_name`}}",
          "ssh_password" : "{{user `ssh_pass`}}"
       },
-     {
-         "type": "qemu",
-         "name": "qemu-amd64",
-         "vm_name" : "GNS3 VM",
-         "qemu_binary": "qemu-system-x86_64",
-         "disk_compression": true,
-         "disk_image": true,
-         "headless": true,
-         "net_device": "virtio-net-pci",
-         "iso_url" : "{{user `iso_url`}}",
-         "iso_checksum" : "{{user `iso_checksum`}}",
-         "iso_checksum_type": "{{user `iso_checksum_type`}}",
-         "use_default_display": true,
-         "http_directory": "http",
-         "qemuargs": [
-                ["-drive", "file=gns3vm-disk1.qcow2,if=virtio,format=qcow2,cache=none"],
-                ["-drive", "file=gns3vm-disk2.qcow2,if=virtio,format=qcow2,cache=none"],
-                ["-smp", "2"],
-                ["-m", "2048"]
-         ],
-         "shutdown_command" : "echo {{user `ssh_name`}} | sudo -S shutdown -P now",
-         "shutdown_timeout": "20m",
-         "ssh_username" : "{{user `ssh_name`}}",
-         "ssh_password" : "{{user `ssh_pass`}}",
-         "ssh_timeout": "20m",
-         "ssh_handshake_attempts": "20"
-      },
       {
          "type": "qemu",
          "name": "qemu-arm64",
@@ -123,11 +96,9 @@
          "disk_image": true,
          "headless": true,
          "net_device": "virtio-net-pci",
-         "iso_url" : "{{user `iso_url`}}",
-         "iso_checksum" : "{{user `iso_checksum`}}",
-         "iso_checksum_type": "{{user `iso_checksum_type`}}",
+         "iso_url" : "gns3vm-disk1.qcow2",
+         "iso_checksum" : "none",
          "use_default_display": true,
-         "http_directory": "http",
          "qemuargs": [
                 ["-drive", "file=gns3vm-disk1.qcow2,if=virtio,format=qcow2,cache=none"],
                 ["-drive", "file=gns3vm-disk2.qcow2,if=virtio,format=qcow2,cache=none"],
