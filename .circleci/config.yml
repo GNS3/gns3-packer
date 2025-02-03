@@ -62,12 +62,12 @@ commands:
             mkdir artifacts
             scp root@${DEVICE_IP}:"gns3-vm/GNS3*.zip" artifacts
 
-#      - run:
-#          name: Destroy device
-#          when: always
-#          command: |
-#            source env/bin/activate
-#            python3 .circleci/device.py ${EQUINIX_TOKEN} destroy "${EQUINIX_PROJECT}" ${DEVICE_TYPE} ${METRO}
+      - run:
+          name: Destroy device
+          when: always
+          command: |
+            source env/bin/activate
+            python3 .circleci/device.py ${EQUINIX_TOKEN} destroy "${EQUINIX_PROJECT}" ${DEVICE_TYPE} ${METRO}
 
       - run:
           name: Generate SHA256 checksums
