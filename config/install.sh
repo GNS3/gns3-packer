@@ -30,41 +30,54 @@ export UBUNTU_RELEASE=`lsb_release -c -s`
 ## APT sources ##
 #################
 
-#if [[ "$(dpkg --print-architecture)" == "arm64" ]]
-#then
-#
-#cat > /etc/apt/sources.list << EOF
-## For arm64 architecture
-#deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ $UBUNTU_RELEASE main restricted universe multiverse
-#deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ $UBUNTU_RELEASE-updates main restricted universe multiverse
-#deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ $UBUNTU_RELEASE-backports main restricted universe multiverse
-#deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ $UBUNTU_RELEASE-security main restricted universe multiverse
-#
-## For i386 architecture (IOU support)
-#deb [arch=i386] http://archive.ubuntu.com/ubuntu/ $UBUNTU_RELEASE main restricted universe multiverse
-#deb [arch=i386] http://archive.ubuntu.com/ubuntu/ $UBUNTU_RELEASE-updates main restricted universe multiverse
-#deb [arch=i386] http://archive.ubuntu.com/ubuntu/ $UBUNTU_RELEASE-backports main restricted universe multiverse
-#deb [arch=i386] http://security.ubuntu.com/ubuntu/ $UBUNTU_RELEASE-security main restricted universe multiverse
-#EOF
-#
-#else
-#
-#cat > /etc/apt/sources.list << EOF
-## For i386 and amd64 architectures
-#deb http://archive.ubuntu.com/ubuntu/ $UBUNTU_RELEASE main restricted universe multiverse
-#deb http://archive.ubuntu.com/ubuntu/ $UBUNTU_RELEASE-updates main restricted universe multiverse
-#deb http://archive.ubuntu.com/ubuntu/ $UBUNTU_RELEASE-backports main restricted universe multiverse
-#deb http://security.ubuntu.com/ubuntu/ $UBUNTU_RELEASE-security main restricted universe multiverse
-#EOF
-#
-#fi
+if [[ "$(dpkg --print-architecture)" == "arm64" ]]
+then
 
-# Select the best APT mirror
-# Taken from https://github.com/vegardit/fast-apt-mirror.sh
-sudo -H ./fast-apt-mirror.sh find --speedtests 10 --apply
+# Use the Ubuntu ports repository for arm64 and the main repository for i386 and amd64
+cat > /etc/apt/ubuntu.sources << EOF
+Types: deb
+URIs: http://ports.ubuntu.com/ubuntu-ports
+Suites: noble noble-updates noble-backports
+Components: main restricted universe multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+Architectures: arm64
 
-# Activate i386 for IOU support
-dpkg --add-architecture i386
+Types: deb
+URIs: http://ports.ubuntu.com/ubuntu-ports
+Suites: noble-security
+Components: main restricted universe multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+Architectures: arm64
+
+Types: deb
+URIs: http://archive.ubuntu.com/ubuntu
+Suites: noble noble-updates noble-backports
+Components: main restricted universe multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+Architectures: i386 amd64
+
+Types: deb
+URIs: http://security.ubuntu.com/ubuntu/
+Suites: noble-security
+Components: main restricted universe multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+Architectures: i386 amd64
+EOF
+
+  # Activate i386 and amd64 for IOU support
+  dpkg --add-architecture i386
+  dpkg --add-architecture amd64
+
+else
+
+  # Select the best APT mirror
+  # Taken from https://github.com/vegardit/fast-apt-mirror.sh
+  sudo -H ./fast-apt-mirror.sh find --apply --speedtests 10 --
+
+  # Activate i386 for IOU support
+  dpkg --add-architecture i386
+
+fi
 
 # use sudo -E to preserve proxy config
 if [[ "$UNSTABLE_APT" == "1" ]]
@@ -179,6 +192,7 @@ if [[ "$(dpkg --print-architecture)" == "arm64" ]]
 then
   # Install Qemu user emulation with binfmt_misc on arm64 (for IOU support)
   apt install -y binfmt-support qemu-user qemu-user-binfmt
+  apt install -y libc6:i386 libc6:amd64
 fi
 
 apt install -y gns3-iou

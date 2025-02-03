@@ -131,16 +131,16 @@ function read_main_mirror_from_deb822_file() {
 }
 
 
-############################
-# returns two lines:
-# 1. mirror URL
-# 2. config file where the mirror URL was defined
-############################
 function get_current_mirror() {
+  ############################
+  # returns two lines:
+  # 1. mirror URL
+  # 2. config file where the mirror URL was defined
+  ############################
   >&2 echo -n "Current mirror: "
   local dist_name=$(get_dist_name)
   case $dist_name in
-    debian|ubuntu|pop)
+    debian|kali|ubuntu|pop)
        ;;
     *) >&2 echo "unknown (Unsupported operating system: $dist_name)"
        return $RC_MISC_ERROR
@@ -149,9 +149,8 @@ function get_current_mirror() {
 
   local current_mirror_cfgfile
   case $dist_name in
-    debian)
-        current_mirror_cfgfile='/etc/apt/sources.list.d/debian.sources'
-      ;;
+    debian) current_mirror_cfgfile='/etc/apt/sources.list.d/debian.sources' ;;
+    kali)   current_mirror_cfgfile='/etc/apt/sources.list' ;;
     ubuntu|pop)
         if [[ -f /etc/apt/sources.list.d/ubuntu.sources ]]; then # Ubuntu 24+
           current_mirror_cfgfile='/etc/apt/sources.list.d/ubuntu.sources'
@@ -165,13 +164,16 @@ function get_current_mirror() {
   if [[ -z $current_mirror_url ]]; then
     if [[ -f /etc/apt/sources.list ]]; then
        if grep -q -E "^deb\s+mirror\+file:/etc/apt/apt-mirrors.txt\s+.*\s+main" /etc/apt/sources.list; then
-         current_mirror_url=$(awk 'NR==1 { print $1 }' /etc/apt/apt-mirrors.txt)
          current_mirror_cfgfile=/etc/apt/apt-mirrors.txt
+         current_mirror_url=$(awk 'NR==1 { print $1 }' "$current_mirror_cfgfile")
        else
-         current_mirror_url=$(grep -E "^deb\s+(https?|ftp)://.*\s+main" /etc/apt/sources.list | awk 'NR==1 { print $2 }')
          current_mirror_cfgfile=/etc/apt/sources.list
+         current_mirror_url=$(grep -E "^deb\s+(https?|ftp)://.*\s+main" "$current_mirror_cfgfile" | awk 'NR==1 { print $2 }')
        fi
     fi
+  elif [[ $current_mirror_url == "mirror+file:"* ]]; then
+    current_mirror_cfgfile=${current_mirror_url/mirror+file:/}
+    current_mirror_url=$(awk 'NR==1 { print $1 }' "${current_mirror_url/mirror+file:/}")
   fi
 
   if [[ -z $current_mirror_url ]]; then
@@ -209,6 +211,7 @@ function find_fast_mirror() {
       --speedtests)   assert_option_is_int "$1" "$2"; shift; local max_speedtests=$1 ;;
       --sample-size)  assert_option_is_int "$1" "$2"; shift; local sample_size_kb=$1 ;;
       --sample-time)  assert_option_is_int "$1" "$2"; shift; local sample_time_secs=$1 ;;
+      --country)           shift; local country=${1^^} ;;
       --apply)             local apply=true ;;
       --exclude-current)   local exclude_current=true ;;
       --ignore-sync-state) local ignore_sync_state=true ;;
@@ -221,6 +224,7 @@ function find_fast_mirror() {
         echo
         echo "Options:"
         echo "     --apply             - Replaces the currently configured APT mirror in /etc/apt/(sources.list|sources.list.d/system.sources) with a fast mirror and runs 'sudo apt-get update'"
+        echo "     --country CODE      - The country code to use for selecting mirrors. NOTE: Only applies to Ubuntu based distros. Defaults to http://mirrors.ubuntu.com/mirrors.txt"
         echo "     --exclude-current   - If specified, don't include the currently configured APT mirror in the speed tests."
         echo "     --healthchecks N    - Number of mirrors from the mirrors list to check for availability and up-to-dateness - default is 20"
         echo "     --ignore-sync-state - Don't check up-to-dateness of mirrors as part of healthchecks"
@@ -243,15 +247,13 @@ function find_fast_mirror() {
 
   local dist_name=$(get_dist_name)
   case $dist_name in
-    debian|ubuntu|pop)
+    debian|kali|ubuntu|pop)
       local dist_version_name=$(get_dist_version_name)
       local dist_arch=$(dpkg --print-architecture)
       ;;
     *) # use dummy values on unsupported Linux distributions so the speed test can still be executed
-      local dist_name=ubuntu
-      local dist_version_name=bionic
-      #local dist_name=debian
-      #local dist_version_name=bookworm
+      local dist_name=debian
+      local dist_version_name=stable
       local dist_arch=amd64
       ;;
   esac
@@ -273,9 +275,14 @@ function find_fast_mirror() {
       local mirrors=$(curl --max-time 5 -sSL https://www.debian.org/mirror/list | grep -Eo '(https?|ftp)://[^"]+/debian/')
       local last_modified_path="/dists/${dist_version_name}-updates/main/Contents-${dist_arch}.gz"
       ;;
+    kali)
+      local reference_mirror=https://http.kali.org/
+      local mirrors=$(curl -sSfL https://http.kali.org/README?mirrorlist | grep -oP '(?<=README">)(https.*)(?=</a)')
+      local last_modified_path="/dists/${dist_version_name}/main/Contents-${dist_arch}.gz"
+      ;;
     ubuntu|pop)
       local reference_mirror=http://archive.ubuntu.com/ubuntu/
-      local mirrors=$(curl --max-time 5 -sSfL http://mirrors.ubuntu.com/mirrors.txt)
+      local mirrors=$(curl --max-time 5 -sSfL "http://mirrors.ubuntu.com/${country:-mirrors}.txt")
       local last_modified_path="/dists/${dist_version_name}-security/Contents-${dist_arch}.gz"
       ;;
   esac
@@ -433,7 +440,7 @@ function set_mirror() {
 
   dist_name=$(get_dist_name)
   case $dist_name in
-    debian|ubuntu|pop) ;;
+    debian|kali|ubuntu|pop) ;;
     *) echo "ERROR: Cannot set APT mirror: unsupported operating system: $dist_name"; return $RC_MISC_ERROR ;;
   esac
 
