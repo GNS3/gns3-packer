@@ -42,6 +42,6 @@ for vmdk_file in *.vmdk; do
     qemu-img convert -O qcow2 "${vmdk_file}" "${qcow2_file}.qcow2"
 done
 
-7z a -bsp1 -mx=9 "GNS3.VM.KVM.${GNS3_VERSION}.zip" *.qcow2 start-gns3vm.sh
+7z a -bsp1 -mx=1 "GNS3.VM.KVM.${GNS3_VERSION}.zip" *.qcow2 start-gns3vm.sh
 
 rm "/tmp/GNS3VM.VirtualBox.${GNS3_VERSION}.ova"
