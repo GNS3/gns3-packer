@@ -64,9 +64,9 @@ Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
 Architectures: i386 amd64
 EOF
 
-  # Activate i386 and amd64 for IOU support
-  #dpkg --add-architecture i386
-  #dpkg --add-architecture amd64
+# Activate i386 and amd64 for IOU support
+#dpkg --add-architecture i386
+#dpkg --add-architecture amd64
 
 else
 
@@ -192,10 +192,10 @@ if [[ "$(dpkg --print-architecture)" == "arm64" ]]
 then
   # Install Qemu user emulation with binfmt_misc on arm64 (for IOU support)
   apt install -y binfmt-support qemu-user qemu-user-binfmt
-  apt install -y libc6:i386 libc6:amd64
+  # apt install -y libc6:i386 libc6:amd64
 fi
 
-apt install -y gns3-iou
+# apt install -y gns3-iou
 
 # System tuning for IOU support
 cp 50-qlen_gns3.conf /etc/sysctl.d/50-qlen_gns3.conf
