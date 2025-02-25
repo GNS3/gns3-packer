@@ -65,8 +65,8 @@ Architectures: i386 amd64
 EOF
 
   # Activate i386 and amd64 for IOU support
-  dpkg --add-architecture i386
-  dpkg --add-architecture amd64
+  #dpkg --add-architecture i386
+  #dpkg --add-architecture amd64
 
 else
 
