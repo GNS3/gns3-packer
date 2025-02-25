@@ -34,7 +34,7 @@ if [[ "$(dpkg --print-architecture)" == "arm64" ]]
 then
 
 # Use the Ubuntu ports repository for arm64 and the main repository for i386 and amd64
-cat > /etc/apt/ubuntu.sources << EOF
+cat > /etc/apt/sources.list.d/ubuntu.sources << EOF
 Types: deb
 URIs: http://ports.ubuntu.com/ubuntu-ports
 Suites: noble noble-updates noble-backports
@@ -65,8 +65,8 @@ Architectures: i386 amd64
 EOF
 
 # Activate i386 and amd64 for IOU support
-#dpkg --add-architecture i386
-#dpkg --add-architecture amd64
+dpkg --add-architecture i386
+dpkg --add-architecture amd64
 
 else
 
@@ -144,12 +144,6 @@ sudo usermod -aG kvm gns3
 echo "owner /opt/gns3/** rwk," | sudo tee /etc/apparmor.d/local/usr.bin.swtpm > /dev/null
 sudo service apparmor restart
 
-if [[ "$(dpkg --print-architecture)" == "arm64" ]]
-then
-  # Install Qemu user emulation with binfmt_misc on arm64 (for IOU support)
-  apt-get install binfmt-support qemu-user qemu-user-binfmt
-fi
-
 # Fix the KVM high CPU usage with some appliances
 # See https://github.com/GNS3/gns3-vm/issues/128
 if [[ ! $(cat /etc/modprobe.d/qemu-system-x86.conf | grep "halt_poll_ns") ]]; then
@@ -192,10 +186,10 @@ if [[ "$(dpkg --print-architecture)" == "arm64" ]]
 then
   # Install Qemu user emulation with binfmt_misc on arm64 (for IOU support)
   apt install -y binfmt-support qemu-user qemu-user-binfmt
-  # apt install -y libc6:i386 libc6:amd64
+  apt install -y libc6:i386 libc6:amd64
 fi
 
-# apt install -y gns3-iou
+apt install -y gns3-iou
 
 # System tuning for IOU support
 cp 50-qlen_gns3.conf /etc/sysctl.d/50-qlen_gns3.conf
