@@ -34,7 +34,7 @@ if [[ "$(dpkg --print-architecture)" == "arm64" ]]
 then
 
 # Use the Ubuntu ports repository for arm64 and the main repository for i386 and amd64
-cat > /etc/apt/ubuntu.sources << EOF
+cat > /etc/apt/sources.list.d/ubuntu.sources << EOF
 Types: deb
 URIs: http://ports.ubuntu.com/ubuntu-ports
 Suites: noble noble-updates noble-backports
@@ -64,9 +64,9 @@ Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
 Architectures: i386 amd64
 EOF
 
-  # Activate i386 and amd64 for IOU support
-  dpkg --add-architecture i386
-  dpkg --add-architecture amd64
+# Activate i386 and amd64 for IOU support
+dpkg --add-architecture i386
+dpkg --add-architecture amd64
 
 else
 
@@ -143,12 +143,6 @@ sudo usermod -aG kvm gns3
 # additional permissions need to be configured for swtpm in AppArmor
 echo "owner /opt/gns3/** rwk," | sudo tee /etc/apparmor.d/local/usr.bin.swtpm > /dev/null
 sudo service apparmor restart
-
-if [[ "$(dpkg --print-architecture)" == "arm64" ]]
-then
-  # Install Qemu user emulation with binfmt_misc on arm64 (for IOU support)
-  apt-get install binfmt-support qemu-user qemu-user-binfmt
-fi
 
 # Fix the KVM high CPU usage with some appliances
 # See https://github.com/GNS3/gns3-vm/issues/128

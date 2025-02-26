@@ -166,7 +166,7 @@ jobs:
                 wget https://releases.hashicorp.com/packer/1.11.2/packer_1.11.2_linux_amd64.zip -O /tmp/packer.zip
               fi
 
-              7z e -y /tmp/packer.zip -o/usr/local/bin/
+              7zz e -y /tmp/packer.zip -o/usr/local/bin/
               apt install -y genisoimage qemu-utils qemu-system-x86 qemu-kvm
             "
 
